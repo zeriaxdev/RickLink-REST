@@ -1,0 +1,14 @@
+{
+  "name": "ricklink-rest",
+  "version": "1.0.0",
+  "description": "REST API with a huge list of RickRoll links.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "zeriaxdev",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}

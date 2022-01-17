@@ -1,16 +1,35 @@
-const app = require("express")();
-
-const port = process.env.PORT || 3000;
+const http = require("http");
+// const fs = require('fs');
 const rickFile = require("./links.json");
 
-app.get("/", (req, res) => {
-  res.json(rickFile.data);
+// const options = {
+//   key: fs.readFileSync('./key.pem'),
+//   cert: fs.readFileSync('./cert.pem')
+// };
 
-  req.on("error", (err) => {
-    console.log(err);
+const startServer = (serve) => {
+  const hostname = "0.0.0.0";
+  const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+
+  const server = http.createServer(
+    // options,
+    (req, res) => {
+    if (typeof serve === "undefined" || !serve(req, res)) {
+      res.writeHead(200);
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "text/plain");
+      res.end("OK");
+    }
   });
-});
 
-app.listen(port, () => {
-  console.log(`RickLink is running on port ${port}!`);
+  server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+  });
+};
+
+startServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+  res.end(JSON.stringify(rickFile.data));
+  return true;
 });
